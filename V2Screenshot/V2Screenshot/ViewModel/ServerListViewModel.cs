@@ -355,6 +355,8 @@ namespace V2Screenshot.ViewModel
                     case "Error":
                         if (vm.Hostname == "unknown" || (!vm.IsOpen && vm.Error != null))
                             vm.Show = false;
+                        else if (vm.Error == null)
+                            vm.Show = true;
                         break;
 
                     case "Show":
@@ -374,9 +376,7 @@ namespace V2Screenshot.ViewModel
         void serverCollection_Filter(object sender, FilterEventArgs e)
         {
             ServerViewModel vm = e.Item as ServerViewModel;
-            //Match game
-            /*e.Accepted = (vm.Server.Game == SelectedGame 
-                && vm.Error == null);*/
+            
             e.Accepted = vm.Show;
 
             if(e.Accepted && FilterText != "")

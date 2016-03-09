@@ -231,7 +231,7 @@ namespace V2Screenshot.Model
         public bool Equals(Server s)
         {
             //return (this.Address.ToString().Equals(s.Address.ToString()) && this.Port.Equals(s.Port));
-            return (this.Npid.Equals(s.Npid));
+            return (this.Npid.Equals(s.Npid) || (Address.Equals(s.Address) && Port.Equals(s.Port)));
         }
 
         #endregion //interfaces
