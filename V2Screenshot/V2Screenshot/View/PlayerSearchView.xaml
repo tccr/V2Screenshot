@@ -31,7 +31,7 @@ d:DesignHeight="300" d:DesignWidth="300">
                     </Style>
                 </TextBox.Style>
             </TextBox>
-            <Button Content="Search" Command="{Binding SearchCommand}" Height="25" Width="50" HorizontalAlignment="Left" Margin="10,0,5,0"/>
+            <Button Content="Search" Command="{Binding SearchCommand}" Height="25" Width="50" HorizontalAlignment="Left" Margin="10,0,5,0" IsDefault="True"/>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <ListView ItemsSource="{Binding Source={StaticResource SortedPlayers}}" HorizontalContentAlignment="Stretch">
