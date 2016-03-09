@@ -1,0 +1,186 @@
+﻿using V2Screenshot.DataAccess;
+using V2Screenshot.Error;
+using V2Screenshot.Model;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace V2Screenshot.ViewModel
+{
+    class PlayerSearchViewModel : WorkspaceViewModel, IDataErrorInfo
+    {
+        private string searchQuery = String.Empty;
+
+        #region properties
+
+        public override string Title
+        {
+            get
+            {
+                return "Search Player";
+            }
+
+        }
+
+        public string SearchQuery {
+            get
+            {
+                return searchQuery;
+            }
+            set
+            {
+                if(searchQuery != value)
+                {
+                    searchQuery = value;
+                    NotifyPropertyChanged("SearchQuery");
+                }
+            }
+        }
+
+        public ObservableCollection<PlayerViewModel> Players { get; private set; }
+
+
+        #endregion //properties
+
+
+        #region Commands
+
+        public Command SearchCommand{ get; private set; }
+
+        public ParameterCommand<PlayerViewModel> OpenPlayerCommand { get; private set; }
+
+        
+
+        #endregion //commands
+
+
+        #region Constructor
+
+        public PlayerSearchViewModel() : base(false)
+        {
+            Players = new ObservableCollection<PlayerViewModel>();
+            
+            InitCommands();
+
+            this.PropertyChanged += PlayerSearchViewModel_PropertyChanged;
+        }
+
+        
+        #endregion //constructor
+
+
+        #region methods
+
+        private void InitCommands()
+        {
+            SearchCommand = new Command(CmdSearch, CanSearch);
+            OpenPlayerCommand = new ParameterCommand<PlayerViewModel>(CmdOpenPlayer, CanOpenPlayer);
+        }
+
+        private void AddPlayer(Player p)
+        {
+            Players.Add(V2DataAccess.GetPlayerVM(p));
+        }
+
+        private void RemovePlayer(Player p)
+        {
+            Players.Remove(Players.First(x => x.Player.OriginalName.Equals(p.OriginalName)));
+        }
+
+
+        #endregion //methods
+
+
+        #region command methods
+
+        private bool CanSearch()
+        {
+            return !IsLoading && SearchQuery != String.Empty;
+        }
+
+        private async void CmdSearch()
+        {
+            IsLoading = true;
+            try
+            {
+                await V2DataAccess.UpdateCollection<PlayerViewModel, Player>(Players, GetData, x => x.Player, AddPlayer, true);
+            }
+            catch(ExceptionBase ex)
+            {
+                SetError(ex, CmdSearch);
+            }
+            IsLoading = false;
+        }
+
+        private async Task<List<Player>> GetData()
+        {
+            return await V2DataAccess.FindPlayers(SearchQuery);
+        }
+
+        private bool CanOpenPlayer(PlayerViewModel pvm)
+        {
+            return !MainWindowViewModel.Workspaces.Contains(pvm);
+        }
+
+        private void CmdOpenPlayer(PlayerViewModel pvm)
+        {
+            MainWindowViewModel.AddWorkspace(pvm);
+            pvm.OnOpen();
+            
+            OpenPlayerCommand.NotifyCanExecuteChanged();
+        }
+
+
+        #endregion //command methods
+
+        #region events
+
+        private void PlayerSearchViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch(e.PropertyName)
+            {
+                case "SearchQuery":
+                case "IsLoading":
+                    SearchCommand.NotifyCanExecuteChanged();
+                    break;
+            }
+        }
+
+
+        #endregion //events
+
+
+
+        #region errors
+
+        string IDataErrorInfo.Error
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch(columnName)
+                {
+                    case "SearchQuery":
+                        if(SearchQuery == String.Empty || SearchQuery == null)
+                        {
+                            return "Name must not be empty";
+                        }
+                        break;
+                }
+                return null;
+            }
+        }
+
+        #endregion
+    }
+}

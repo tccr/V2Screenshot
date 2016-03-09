@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="V2Screenshot.View.ServerListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="SortedServers" Source="{Binding Servers}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Clients" Direction="Descending" />
+            </CollectionViewSource.SortDescriptions>
+            
+        </CollectionViewSource>
+    </UserControl.Resources>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="5">
+            <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Center" Text="Servers: "/>
+            <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Center" Text="{Binding ServerCount}" Margin="0,0,5,0"/>
+            <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Center" Text="Online Players: "/>
+            <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Center" Text="{Binding PlayerCount}" Margin="0,0,15,0"/>
+            <CheckBox DockPanel.Dock="Left" Content="Auto Refresh" IsChecked="{Binding AutoRefresh}" HorizontalAlignment="Center" Margin="0,0,5,0"/>
+            <Button Content="Refresh" Command="{Binding RefreshCommand}"/>
+            <ComboBox MinWidth="100" IsEditable="False" Margin="10,0,0,0" ItemsSource="{Binding Games}" DisplayMemberPath="DisplayName" SelectedValue="{Binding Path=SelectedGame}" />
+            <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Center" Text="Filter:" Margin="10,0,5,0"/>
+            <TextBox Width="100" Text="{Binding Path=FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <CheckBox DockPanel.Dock="Left" Content="Favorites" IsChecked="{Binding FilterFavorites}" HorizontalAlignment="Center" Margin="5,0,5,0"/>
+        </DockPanel>
+        <ListView ItemsSource="{Binding SourceCollection}" HorizontalContentAlignment="Stretch">
+            <ListView.Resources>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Background" Value="{Binding StatusBrush}" />
+                </Style>
+
+            </ListView.Resources>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="50" Header="Favorite">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsFavorite}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Width="500" Header="Name"
+                        DisplayMemberBinding="{Binding Hostname}" />
+
+                    <GridViewColumn Width="auto" Header="Players"
+                        DisplayMemberBinding="{Binding ClientCount}"  />
+                    
+                    <GridViewColumn Width="auto" Header="Map"  
+                        DisplayMemberBinding="{Binding MapName}" />
+
+                    <GridViewColumn Width="auto" Header="Gametype"  
+                        DisplayMemberBinding="{Binding GameType}" />
+
+                    <GridViewColumn Width="auto">
+                        
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="50" Content="Open" Command="{Binding OpenCommand}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+            
+        </ListView>
+        
+    </DockPanel>
+    
+</UserControl>
