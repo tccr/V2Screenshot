@@ -69,9 +69,7 @@
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
@@ -83,6 +81,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>7ED2FF8070217B5D94E1732EDEDAD12381866BB4</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ScreenshotTool.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -283,6 +287,7 @@
     </PublishFile>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="ScreenshotTool.ico" />
     <Content Include="tor\libeay32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
