@@ -352,13 +352,6 @@ namespace V2Screenshot.ViewModel
                         NotifyPropertyChanged("PlayerCount");
                         break;
 
-                    case "Error":
-                        if (vm.Hostname == "unknown" || (!vm.IsOpen && vm.Error != null))
-                            vm.Show = false;
-                        else if (vm.Error == null)
-                            vm.Show = true;
-                        break;
-
                     case "Show":
                     case "IsFavorite":
                         NotifyPropertyChanged("Servers");

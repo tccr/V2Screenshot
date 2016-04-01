@@ -17,7 +17,6 @@ namespace V2Screenshot.ViewModel
 {
     class ServerViewModel : WorkspaceViewModel, IDisposable
     {
-        private bool show = true;
 
         #region Properties
 
@@ -125,15 +124,7 @@ namespace V2Screenshot.ViewModel
         {
             get
             {
-                return show;
-            }
-            set
-            {
-                if(show != value)
-                {
-                    show = value;
-                    NotifyPropertyChanged("Show");
-                }
+                return ((!HasError || IsOpen) && Hostname != "unknown");
             }
         }
 
@@ -294,6 +285,10 @@ namespace V2Screenshot.ViewModel
             {
                 case "Error":
                     NotifyPropertyChanged("StatusBrush");
+                    break;
+                case "HasError":
+                case "Hostname":
+                    NotifyPropertyChanged("Show");
                     break;
             }
         }
