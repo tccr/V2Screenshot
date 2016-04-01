@@ -33,6 +33,14 @@ namespace V2Screenshot.ViewModel
             }
         }
 
+        public bool HasError
+        {
+            get
+            {
+                return Error != null;
+            }
+        }
+
 
 
 
@@ -102,6 +110,7 @@ namespace V2Screenshot.ViewModel
                 {
                     Error.PropertyChanged += Error_PropertyChanged;
                 }
+                NotifyPropertyChanged("HasError");
             }
         }
 
