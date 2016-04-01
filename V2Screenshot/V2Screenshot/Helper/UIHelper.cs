@@ -75,6 +75,7 @@ namespace V2Screenshot.Helper
                { "mp_vacant", "Vacant" },
                     //other
                { "mp_nuked", "Nuketown" },
+               { "mp_killhouse", "Killhouse" },
             };
 
         private static Dictionary<string, string> gametypes = new Dictionary<string, string>()
