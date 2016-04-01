@@ -146,14 +146,13 @@ namespace V2Screenshot.ViewModel
         #region methods
 
         
-        private async void UpdatePlayers()
+        private void UpdatePlayers()
         {
             
             IsLoading = true;
             
             try
             {
-                //await ServerDataAccess.UpdateCollection<PlayerViewModel, Player>(Players, ServerVM.ServerDataAccess.GetPlayersAsync, x => x.Player, Add, true);
                 ServerVM.UpdateServerInfo();
             }
             catch (ExceptionBase ex)
