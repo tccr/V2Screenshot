@@ -23,7 +23,7 @@ namespace V2Screenshot.DataAccess
     class V2DataAccess : DataAccessBase
     {
         private const string API_BASE = "http://fjql7u2zyeb4vwdk.onion/api/";
-        private const double API_DELAY = 1.2;
+        private const double API_DELAY = 1;
         private const int API_TRIES = 3;
         protected static string USER_AGENT = "V2 Screenshot Tool/" 
             + Assembly.GetExecutingAssembly().GetName().Version.ToString() 
